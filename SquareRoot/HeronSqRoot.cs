@@ -24,7 +24,7 @@ using System.Threading.Tasks;
 
 namespace SquareRoot
 {
-    class SquareRoot
+    class HeronSqRoot
     {
         /// <summary>
         /// Number input by the user as their guess of the square root
@@ -38,7 +38,7 @@ namespace SquareRoot
         public double _number { get; set; }
         public double _errorLimit { get; set; }
 
-        public SquareRoot(double errorLimit)
+        public HeronSqRoot(double errorLimit)
         {
             //Set the number to guess
             _number = 25;
@@ -53,46 +53,39 @@ namespace SquareRoot
         public double AskForNumber()
         {
             double result = 0;
-            string input = string.Empty;
             bool check = false;
 
             do
             {
-                Console.Write("What do you think the square root of {0} is? ", _number);
-                input = Console.ReadLine();
+                Console.Write("Which number do you want to calculate the square root for? ");
+                string input = Console.ReadLine();
                 check = Double.TryParse(input, out result);
 
-                if (!check)
-                {
+                if (!check || result < 0)
                     Console.WriteLine("A valid number was not provided. Please try again.");
-                }
 
-            } while (!check);            
+            } while (!check || result < 0);            
 
             return result;
         }
 
         /// <summary>
-        /// The Heron algorithm for computing the square root of a number N is: 
-        ///1. Start with a guess number G, (for example, G = N / 2) 
-        ///2. If G* G is close enough to N, then return G. (*1) 
-        ///3. Otherwise, compute G = (G + N / G) / 2 and iterate.
-        ///http://cwestblog.com/2012/10/11/javascript-herons-square-root-algorithm/
+        /// Computes the square root of a number
+        /// Validates the number is positive, and throw an exception otherwise
         /// </summary>
-        public double CalcSquareRoot(double guessNumber)
-        {
-            if (guessNumber * guessNumber == _number)
+        public double CalcHeronSqRoot(double number)
+        {                        
+            if (Math.Round(number * number,1) == Math.Round(_number))
             {
-                return guessNumber;
+                return number;
             }
-            else if (guessNumber == Math.Round(_number + _errorLimit, 1) || guessNumber == Math.Round(_number - _errorLimit, 1))
+            //Add an errorlimit for the range to check
+            else if (number == Math.Round(_number + _errorLimit, 1) || number == Math.Round(_number - _errorLimit, 1))
             {
-                return guessNumber;
+                return number;
             }
-            else
-            { 
-                return CalcSquareRoot( Math.Round(((guessNumber + (_number / guessNumber)) / 2),1));
-            }
+
+            return CalcHeronSqRoot( Math.Round(((number + (_number / number)) / 2),2));            
         }
         
     }

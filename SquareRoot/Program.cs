@@ -11,10 +11,10 @@ namespace CalcSquareRoot
     {
         static void Main(string[] args)
         {
-            SquareRoot.SquareRoot sq = new SquareRoot.SquareRoot(.1);
-            
-            double numberGuess = sq.AskForNumber();
-            double result = sq.CalcSquareRoot(numberGuess);
+            SquareRoot.HeronSqRoot sq = new SquareRoot.HeronSqRoot(.1);
+
+            sq._number = sq.AskForNumber();
+            double result = sq.CalcHeronSqRoot(sq._number);
             
             Console.WriteLine("The square root of is {0}", result);
             Console.Read();
